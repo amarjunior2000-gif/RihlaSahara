@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: rihlasahara-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    plan: starter
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: APP_ENV
+        value: production
+      - key: RIHLASAHARA_DB_PATH
+        value: /var/data/rihlasahara.db
+      - key: RIHLASAHARA_SECRET_KEY
+        generateValue: true
+      - key: ADMIN_AMAR_PASSWORD
+        sync: false
+      - key: ADMIN_KAOUTAR_PASSWORD
+        sync: false
+    disk:
+      name: rihlasahara-data
+      mountPath: /var/data
+      sizeGB: 1
